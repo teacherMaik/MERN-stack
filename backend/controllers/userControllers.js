@@ -24,6 +24,7 @@ const registerUser = asyncHandler(async (req,res) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
+  // Create User
   const newUser = await User.create({
     name,
     email,
@@ -35,7 +36,7 @@ const registerUser = asyncHandler(async (req,res) => {
     res.status(201).json({
       _id: newUser.id,
       name: newUser.name,
-      emaIl: newUser.email,
+      email: newUser.email,
       token: generateToken(newUser._id),
     });
   };
@@ -67,10 +68,16 @@ const loginUser = asyncHandler(async (req, res) => {
 
 //@desc Get user Data
 //@route GET /api/users/me
-//@access Public 
+//@access Private
 const getMe = asyncHandler(async (req, res) => {
 
-  res.status(200).json({ message: 'user data user' });
+  const { _id, name, email} = await User.findById(req.user.id);
+
+  res.status(201).json({
+    id: _id,
+    name,
+    email,
+  })
 });
 
 // Generate JWT
