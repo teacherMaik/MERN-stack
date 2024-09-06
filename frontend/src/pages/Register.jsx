@@ -14,8 +14,20 @@ function Register() {
 
   const { name, email, password, password2 } = formData;
   
-  const onChange = () => {};
-  const onSubmit = () => {};
+  const onChange = (e) => {
+
+    setFormData((prevState) => ({
+
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }))
+  };
+
+
+  const onSubmit = (e) => {
+
+    e.preventDefault();
+  };
 
   return (
     <>
